@@ -7,7 +7,7 @@ let snake = [
 
 var deltaX = 20;
 var deltaY = 0;
-var running = false;
+var running;
 var direction = 2; //Directions: 0 = left, 1 = up, 2 = right, 3 = down.
 var score = 0;
 
@@ -17,9 +17,10 @@ function drawSnake() {
   snake.pop();
 
   //Collision mechanics
-  if (snake[0].x <= -15 || snake[0].y <= -15 || snake[0].x >= 760 || snake[0].y >= 460) { //760 - snake size = 745. 460 - snake size = 445
+  if (running === true && (snake[0].x <= -15 || snake[0].y <= -15 || snake[0].x >= 760 || snake[0].y >= 460)) { //760 - 15 (snake size) = 745. 460 - snake size = 445
     gameOver();
   }
+  // Colliding with own tail conditional
   for (var i = 1; i <= snake.length - 1; i++) {
     if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
       gameOver();
@@ -41,14 +42,21 @@ function drawSnake() {
   drawFood();
 }
 
-function gameStart() {
-  score = 0;
+function resetSnakePosition() {
+  direction = 2;
   snake = [
     { x: 380, y: 280 },
     { x: 380, y: 260 },
     { x: 380, y: 240 },
     { x: 380, y: 220 }
   ];
+}
+
+function gameStart() {
+  running = true;
+
+  console.log(running);
+  score = 0;
 
   this.interval = setInterval(drawSnake, 100);
   // Canvas width: 760 / 20 = 38
@@ -58,13 +66,11 @@ function gameStart() {
 }
 
 function gameOver() {
-  this.ctx.fillText("GAME OVER", 200, 200);
-
+  running = false;
+  console.log(running);
   clearInterval(interval);
 
   console.log("GAME OVER");
-  running = false;
-
 }
 
 function gameInit() {
@@ -91,6 +97,8 @@ function gameInit() {
 
   ctx.font = "18px Arial";
   ctx.fillText("Use arrow keys to move", 290, 375);
+
+  running = false;
 }
 
 //Basic keycode checking for arrow keys.
@@ -143,9 +151,12 @@ function move(keyCodeNum) {
         break;
       }
     case 32: //Space bar starts game, but is disabled while game is running.
-      if (running == false) {
+      if (running === false) {
+        deltaX = 20;
+        deltaY = 0;
+        resetSnakePosition();
         gameStart();
-        running = true;
+        console.log("Space");
         break;
       } else {
         break;
