@@ -8,10 +8,6 @@ To start game, press space bar. Arrow keys turn the snake and score is kept at b
 
 ------------------------------------------------------------------------------------------------------------------------------
 
-The playable demo is currently live at www.blaughlin.info
-
-------------------------------------------------------------------------------------------------------------------------------
-
 <h3>COMING SOON:</h3>
 1. Game over screen
 2. Various bug fixes
